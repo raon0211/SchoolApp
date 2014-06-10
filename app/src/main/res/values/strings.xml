@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">반포고등학교</string>
+    <string name="settings">설정</string>
+
+    <string name="home">홈</string>
+
+    <string name="more">자세히</string>
+
+    <string name="meal">급식</string>
+    <string name="lunch">점심</string>
+    <string name="dinner">저녁</string>
+</resources>
