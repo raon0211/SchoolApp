@@ -1,5 +1,11 @@
 package in.suhj.banpo.Infrastructure.Modules;
 
+import android.content.Context;
+
+import com.fatboyindustrial.gsonjodatime.Converters;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -9,41 +15,80 @@ import static com.wagnerandade.coollection.Coollection.*;
 import org.apache.http.Header;
 import org.joda.time.DateTime;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import in.suhj.banpo.Abstract.IRunnable;
 import in.suhj.banpo.Abstract.ITaskCompleted;
 import in.suhj.banpo.Models.Meal;
 
 /**
  * Created by SuhJin on 2014-06-08.
  */
-// TODO: 구조 수정. Date를 계속해서 넘기는 구조를 수정할 방안을 생각해 보자.
 public class MealModule
 {
     private ITaskCompleted<List<Meal>> listener;
-    private static AsyncHttpClient client;
+    private Context context;
+    private AsyncHttpClient client;
+    private Gson gson;
 
-    public MealModule(ITaskCompleted<List<Meal>> listener)
+    public MealModule(ITaskCompleted<List<Meal>> listener, Context context)
     {
+        this.context = context;
         this.listener = listener;
         this.client = new AsyncHttpClient();
+        this.gson = Converters.registerDateTime(new GsonBuilder()).create();
     }
 
     // date의 중식, 저녁 정보를 반환
-    public void GetMealOfDay(DateTime date)
+    public void GetMealOfDay(DateTime mealDate)
     {
-        date = date.withTime(0, 0, 0, 0);
+        // date의 시간 정보 삭제: 추후 비교에 사용하기 위함 (returnMeal에서 date 비교)
+        final DateTime date = mealDate.withTime(0, 0, 0, 0);
 
-        // TODO: 저장된 XML 파일이 있는지 확인. 없으면 다운로드
-        downloadMeal(date);
+        // json 파일 존재 여부 확인
+        String mealJsonName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+
+        File file = context.getFileStreamPath(mealJsonName);
+        if (file.exists())
+        {
+            try
+            {
+                FileInputStream stream = context.openFileInput(mealJsonName);
+                byte[] data = new byte[stream.available()];
+
+                while (stream.read(data) != -1) { }
+                stream.close();
+
+                String mealJson = new String(data, 0, data.length);
+
+                ArrayList<Meal> meals = gson.fromJson(mealJson, new TypeToken<ArrayList<Meal>>(){}.getType());
+                returnMeals(meals, date);
+            } catch (Exception e) { }
+        }
+        else
+        {
+            downloadMeal(mealDate, new IRunnable<String>()
+            {
+                public void run(String param)
+                {
+                    String response = param;
+
+                    ArrayList<Meal> meals = parseMeals(response);
+                    saveMeals(meals, date);
+                    returnMeals(meals, date);
+                }
+            });
+        }
     }
 
     // 실질적으로 급식 정보를 다운로드하는 메서드
-    private void downloadMeal(final DateTime date)
+    // 재사용을 위해 IRunnable<String>을 받음 (callback)
+    private void downloadMeal(DateTime date, final IRunnable<String> callback)
     {
         String url = "http://hes.sen.go.kr/sts_sci_md00_001.do"; // 급식 정보가 있는 URL
 
@@ -65,21 +110,29 @@ public class MealModule
 
         client.post(url, params, new AsyncHttpResponseHandler()
         {
+            // TODO: OnFailure 시에 오류 출력
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody, Charset.forName("UTF-8"));
 
-                parseMeals(response, date);
+                callback.run(response);
             }
         });
     }
 
-    private void parseMeals(String data, DateTime date)
+    private ArrayList<Meal> parseMeals(String data)
     {
         ArrayList<Meal> meals = new ArrayList<>();
 
-        final int year = date.getYear();
-        final int month = date.getMonthOfYear();
+        // 연도 및 월 파싱
+        Pattern yearMonthPattern = Pattern.compile("(?<=\"schYm\" id=\"schYm\"  value=\")(.*?)(?=\")");
+        Matcher yearMonthMatcher = yearMonthPattern.matcher(data);
+        yearMonthMatcher.find();
+
+        String rawYearMonth = yearMonthMatcher.group(1);
+
+        final int year = Integer.parseInt(rawYearMonth.split("\\.")[0]);
+        final int month = Integer.parseInt(rawYearMonth.split("\\.")[1]);
 
         Pattern containerPattern = Pattern.compile("<td>((.|\n)*?)</td>");
         Matcher containerMatcher = containerPattern.matcher(data);
@@ -131,13 +184,22 @@ public class MealModule
             meals.add(new Meal(new DateTime(year, month, day, 0, 0, 0), Meal.MealType.Dinner, dinnerData));
         }
 
-        saveMeals(meals);
-        returnMeals(meals, date);
+        return meals;
     }
 
-    private void saveMeals(ArrayList<Meal> meals)
+    private void saveMeals(ArrayList<Meal> meals, DateTime date)
     {
-        // TODO: 받아온 급식 정보를 저장
+        String serializedMeals = gson.toJson(meals);
+
+        String fileName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+
+        try
+        {
+            FileOutputStream stream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            stream.write(serializedMeals.getBytes());
+            stream.close();
+        }
+        catch (Exception e) { }
     }
 
     private void returnMeals(ArrayList<Meal> meals, DateTime date)

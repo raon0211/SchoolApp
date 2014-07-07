@@ -1,14 +1,11 @@
 package in.suhj.banpo.PresentationModels;
 
 import android.content.Context;
-import android.os.Looper;
 
 import org.joda.time.DateTime;
 import org.robobinding.presentationmodel.AbstractPresentationModel;
 import org.robobinding.presentationmodel.ItemPresentationModel;
 import org.robobinding.presentationmodel.PresentationModel;
-import org.robobinding.property.ObservableProperties;
-import org.robobinding.property.PresentationModelPropertyChangeSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,7 @@ public class HomePresentationModel extends AbstractPresentationModel implements 
     public HomePresentationModel(Context context)
     {
         this.context = context;
-        this.mealModule = new MealModule(this);
+        this.mealModule = new MealModule(this, context);
 
         this.todayMeals = new ArrayList<Meal>();
 
@@ -47,10 +44,7 @@ public class HomePresentationModel extends AbstractPresentationModel implements 
 
     public void OnTaskCompleted(List<Meal> result)
     {
-        while (todayMeals.size() > 0)
-        {
-            todayMeals.remove(todayMeals.size() - 1);
-        }
+        todayMeals.clear();
 
         for (Meal meal : result)
         {
