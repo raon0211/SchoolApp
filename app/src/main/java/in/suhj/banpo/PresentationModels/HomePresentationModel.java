@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.suhj.banpo.Abstract.ITaskCompleted;
+import in.suhj.banpo.App;
 import in.suhj.banpo.Models.Meal;
 import in.suhj.banpo.Infrastructure.Modules.MealModule;
 
@@ -25,10 +26,10 @@ public class HomePresentationModel extends AbstractPresentationModel implements 
 
     private List<Meal> todayMeals;
 
-    public HomePresentationModel(Context context)
+    public HomePresentationModel()
     {
-        this.context = context;
-        this.mealModule = new MealModule(this, context);
+        this.context = App.getContext();
+        this.mealModule = new MealModule(this);
 
         this.todayMeals = new ArrayList<Meal>();
 

@@ -12,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 
 import static com.wagnerandade.coollection.Coollection.*;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.joda.time.DateTime;
 
@@ -24,6 +25,8 @@ import java.util.regex.Pattern;
 
 import in.suhj.banpo.Abstract.IRunnable;
 import in.suhj.banpo.Abstract.ITaskCompleted;
+import in.suhj.banpo.App;
+import in.suhj.banpo.Infrastructure.Data.RegexManager;
 import in.suhj.banpo.Models.Meal;
 
 /**
@@ -36,9 +39,9 @@ public class MealModule
     private AsyncHttpClient client;
     private Gson gson;
 
-    public MealModule(ITaskCompleted<List<Meal>> listener, Context context)
+    public MealModule(ITaskCompleted<List<Meal>> listener)
     {
-        this.context = context;
+        this.context = App.getContext();
         this.listener = listener;
         this.client = new AsyncHttpClient();
         this.gson = Converters.registerDateTime(new GsonBuilder()).create();
@@ -59,12 +62,8 @@ public class MealModule
             try
             {
                 FileInputStream stream = context.openFileInput(mealJsonName);
-                byte[] data = new byte[stream.available()];
 
-                while (stream.read(data) != -1) { }
-                stream.close();
-
-                String mealJson = new String(data, 0, data.length);
+                String mealJson = IOUtils.toString(stream);
 
                 ArrayList<Meal> meals = gson.fromJson(mealJson, new TypeToken<ArrayList<Meal>>(){}.getType());
                 returnMeals(meals, date);
@@ -125,8 +124,7 @@ public class MealModule
         ArrayList<Meal> meals = new ArrayList<>();
 
         // 연도 및 월 파싱
-        Pattern yearMonthPattern = Pattern.compile("(?<=\"schYm\" id=\"schYm\"  value=\")(.*?)(?=\")");
-        Matcher yearMonthMatcher = yearMonthPattern.matcher(data);
+        Matcher yearMonthMatcher = RegexManager.getMealYearMonthPattern().matcher(data);
         yearMonthMatcher.find();
 
         String rawYearMonth = yearMonthMatcher.group(1);
@@ -134,12 +132,13 @@ public class MealModule
         final int year = Integer.parseInt(rawYearMonth.split("\\.")[0]);
         final int month = Integer.parseInt(rawYearMonth.split("\\.")[1]);
 
-        Pattern containerPattern = Pattern.compile("<td>((.|\n)*?)</td>");
-        Matcher containerMatcher = containerPattern.matcher(data);
+        // 하루의 급식 정보를 담고 있는 컨테이너
+        Matcher containerMatcher = RegexManager.getMealContainerPattern().matcher(data);
 
-        Pattern datePattern = Pattern.compile("(\\d+)");
-        Pattern lunchPattern = Pattern.compile("(?<=\\[중식\\])((.|\n)*?)(?=\\[)");
-        Pattern dinnerPattern = Pattern.compile("(?<=\\[석식\\])((.|\n)+)");
+        // 날짜, 점심, 저녁 정보
+        Pattern datePattern = RegexManager.getMealDatePattern();
+        Pattern lunchPattern = RegexManager.getMealLunchPattern();
+        Pattern dinnerPattern = RegexManager.getMealDinnerPattern();
 
         String brRegex = "<br />";
         String trashInformationRegex = "(^, |, $|[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬.]|\\(석\\)|\\(완\\))";

@@ -14,6 +14,7 @@
 
 * [RoboBinding](https://github.com/RoboBinding/RoboBinding)
 * [AsyncHttpClient](http://loopj.com/android-async-http/)
+* [commons.io](http://commons.apache.org/proper/commons-io/)
 * [Joda Time](http://www.joda.org/joda-time/)
 * [Gson](https://code.google.com/p/google-gson/)
 * [Gson Jodatime Serialisers](https://github.com/gkopff/gson-jodatime-serialisers)

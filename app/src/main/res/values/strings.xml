@@ -11,4 +11,7 @@
     <string name="meal">급식</string>
     <string name="lunch">점심</string>
     <string name="dinner">저녁</string>
+
+    <string name="pattern_update">패턴 업데이트</string>
+    <string name="pattern_update_desc">앱이 오작동할 때 사용해 주세요</string>
 </resources>
