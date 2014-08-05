@@ -1,8 +1,8 @@
 {
-    "version": 20140801,
+    "version": 20140802,
     "meal": {
         "yearMonth": "(?<=\"schYm\" id=\"schYm\"  value=\")(.*?)(?=\")",
-        "container": "<td><div>((.|\n)*?)</div></td>",
+        "container": "<td.*?><div>((.|\\n)*?)(</div>)?</td>",
         "date": "(\\d+)",
         "lunch": "(?<=\\[중식\\])((.|\n)*?)(?=(\\[|$))",
         "dinner": "(?<=\\[석식\\])((.|\n)+)",

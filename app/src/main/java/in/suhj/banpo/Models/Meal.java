@@ -2,6 +2,7 @@ package in.suhj.banpo.Models;
 
 import org.joda.time.DateTime;
 
+import in.suhj.banpo.Infrastructure.Helpers.DateHelper;
 import in.suhj.banpo.R;
 
 /**
@@ -9,17 +10,15 @@ import in.suhj.banpo.R;
  */
 public class Meal
 {
-    public enum MealType { Lunch, Dinner }
-
     private DateTime date;
-    private MealType type; // 점심, 저녁
-    private String content; // 급식 내용
+    private String lunchContent; // 점심 내용
+    private String dinnerContent; // 저녁 내용
 
-    public Meal(DateTime date, MealType type, String content)
+    public Meal(DateTime date, String lunchContent, String dinnerContent)
     {
         this.date = date;
-        this.type = type;
-        this.content = content;
+        this.lunchContent = lunchContent;
+        this.dinnerContent = dinnerContent;
     }
 
     public DateTime GetDate()
@@ -32,40 +31,27 @@ public class Meal
         this.date = date;
     }
 
-    public MealType GetType()
+    public String GetLunchContent()
     {
-        return type;
+        return lunchContent;
     }
 
-    public void SetType(MealType type)
+    public void SetLunchContent(String lunchContent)
     {
-        this.type = type;
+        this.lunchContent = lunchContent;
     }
 
-    public String GetContent()
+    public String GetDinnerContent()
     {
-        return content;
+        return dinnerContent;
     }
 
-    public void SetContent(String content)
+    public void SetDinnerContent(String dinnerContent)
     {
-        this.content = content;
+        this.dinnerContent = dinnerContent;
     }
 
-    public int GetIconId()
-    {
-        int id = 0;
-
-        switch (type)
-        {
-            case Lunch:
-                id = R.drawable.ic_sun;
-                break;
-            case Dinner:
-                id = R.drawable.ic_moon;
-                break;
-        }
-
-        return id;
+    public int GetDateId() {
+        return DateHelper.GetDateId(date);
     }
 }

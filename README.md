@@ -13,7 +13,7 @@
 반포고등학교 애플리케이션은 다음 패키지에 의존합니다.
 
 * [RoboBinding](https://github.com/RoboBinding/RoboBinding)
-* [AsyncHttpClient](http://loopj.com/android-async-http/)
+* [ion](https://github.com/koush/ion)
 * [commons.io](http://commons.apache.org/proper/commons-io/)
 * [Joda Time](http://www.joda.org/joda-time/)
 * [Gson](https://code.google.com/p/google-gson/)

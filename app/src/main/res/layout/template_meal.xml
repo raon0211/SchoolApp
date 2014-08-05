@@ -4,18 +4,41 @@
               xmlns:bind="http://robobinding.org/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:padding="8dp">
-    <ImageView
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="8dp"
-        bind:src="{iconId}"/>
-    <TextView
+              android:padding="8dp"
+              android:orientation="vertical">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        bind:text="{content}"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="16dp">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_lunch"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            bind:text="{lunchContent}"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_dinner"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            bind:text="{dinnerContent}"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 </LinearLayout>

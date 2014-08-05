@@ -1,16 +1,18 @@
 package in.suhj.banpo.PresentationModels;
 
 import android.content.Context;
+import android.content.Intent;
 
 import org.joda.time.DateTime;
 import org.robobinding.presentationmodel.AbstractPresentationModel;
 import org.robobinding.presentationmodel.ItemPresentationModel;
-import org.robobinding.presentationmodel.PresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.suhj.banpo.Abstract.ITaskCompleted;
+import in.suhj.banpo.Activities.MealActivity;
+import in.suhj.banpo.Activities.SettingsActivity;
 import in.suhj.banpo.App;
 import in.suhj.banpo.Models.Meal;
 import in.suhj.banpo.Infrastructure.Modules.MealModule;
@@ -19,7 +21,7 @@ import in.suhj.banpo.Infrastructure.Modules.MealModule;
  * Created by SuhJin on 2014-06-02.
  */
 
-public class HomePresentationModel extends AbstractPresentationModel implements ITaskCompleted<List<Meal>>
+public class HomePresentationModel extends AbstractPresentationModel
 {
     private Context context;
     private MealModule mealModule;
@@ -29,29 +31,23 @@ public class HomePresentationModel extends AbstractPresentationModel implements 
     public HomePresentationModel()
     {
         this.context = App.getContext();
-        this.mealModule = new MealModule(this);
+        this.mealModule = new MealModule();
 
         this.todayMeals = new ArrayList<Meal>();
 
         // 오늘 급식 정보 다운로드
-        mealModule.GetMealOfDay(new DateTime());
+        todayMeals = mealModule.GetMealOfDay(new DateTime());
+        presentationModelChangeSupport.firePropertyChange("todayMeals");
     }
 
-    @ItemPresentationModel(MealPresentationModel.class)
+    @ItemPresentationModel(MealItemPresentationModel.class)
     public List<Meal> getTodayMeals()
     {
         return todayMeals;
     }
 
-    public void OnTaskCompleted(List<Meal> result)
+    public void NavigateMeal()
     {
-        todayMeals.clear();
-
-        for (Meal meal : result)
-        {
-            todayMeals.add(meal);
-        }
-
-        presentationModelChangeSupport.firePropertyChange("todayMeals");
+        context.startActivity(new Intent(context, MealActivity.class));
     }
 }

@@ -11,12 +11,18 @@
 
         <activity
             android:name=".Activities.HomeActivity"
-            android:label="@string/home"
+            android:label="@string/app_name"
             android:logo="@drawable/ic_action_home">
-            <intent-filter android:label="@string/app_name">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.MealActivity"
+            android:label="@string/meal"
+            android:logo="@drawable/ic_action_meal">
         </activity>
 
         <activity
