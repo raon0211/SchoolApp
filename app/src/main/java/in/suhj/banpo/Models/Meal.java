@@ -51,6 +51,11 @@ public class Meal
         this.dinnerContent = dinnerContent;
     }
 
+    public String GetDateString()
+    {
+        return date.getYear() + "년 " + date.getMonthOfYear() + "월 " + date.getDayOfMonth() + "일 " + DateHelper.GetDayName(date.getDayOfWeek());
+    }
+
     public int GetDateId() {
         return DateHelper.GetDateId(date);
     }

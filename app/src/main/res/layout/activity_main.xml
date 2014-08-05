@@ -4,33 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="in.suhj.banpo.Activities.HomeActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/separator_container">
-        <TextView
-            android:id="@+id/address_label"
-            style="@style/separator"
+        android:orientation="horizontal"
+        android:background="@color/black_bg">
+        <!-- 메뉴가 들어갈 부분 -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:focusable="false">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/meal"/>
-        <include layout="@layout/include_more_button"/>
-    </RelativeLayout>
+            style="@style/separator_container">
+            <TextView
+                style="@style/separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meal"/>
+            <include
+                layout="@layout/include_more_button"
+                android:id="@+id/btn_main_navigate_meal"
+                android:clickable="true"
+                bind:onClick="NavigateMeal"/>
+        </RelativeLayout>
 
-
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        bind:source="{todayMeals}"
-        bind:itemLayout="@layout/template_meal"
-        android:divider="#00000000">
-
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            bind:source="{todayMeals}"
+            bind:itemLayout="@layout/template_meal"
+            android:divider="#00000000">
         </ListView>
+    </LinearLayout>
+
 </LinearLayout>

@@ -1,31 +1,86 @@
 package in.suhj.banpo.PresentationModels;
 
-import org.robobinding.itempresentationmodel.ItemPresentationModel;
-import org.robobinding.presentationmodel.PresentationModel;
+import android.content.Context;
 
+import org.joda.time.DateTime;
+import org.joda.time.Weeks;
+import org.robobinding.presentationmodel.AbstractPresentationModel;
+import org.robobinding.presentationmodel.ItemPresentationModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import in.suhj.banpo.Abstract.ITaskCompleted;
+import in.suhj.banpo.App;
 import in.suhj.banpo.Models.Meal;
+import in.suhj.banpo.Infrastructure.Modules.MealModule;
 
 /**
- * Created by SuhJin on 2014-06-08.
+ * Created by SuhJin on 2014-08-02.
  */
-@PresentationModel
-public class MealPresentationModel implements ItemPresentationModel<Meal>
+
+public class MealPresentationModel extends AbstractPresentationModel
 {
-    private Meal meal;
+    private Context context;
+    private MealModule mealModule;
+    private DateTime today;
+    private DateTime displayingDay;
 
-    public int getIconId()
+    private List<Meal> meals;
+
+    public MealPresentationModel()
     {
-        return meal.GetIconId();
+        this.context = App.getContext();
+        this.mealModule = new MealModule();
+        this.today = new DateTime();
+        this.displayingDay = new DateTime();
+
+        this.meals = new ArrayList<Meal>();
+
+        // 일주일 급식 정보 다운로드
+        meals = mealModule.GetMealOfWeek(today);
+        presentationModelChangeSupport.firePropertyChange("meals");
     }
 
-    public String getContent()
+    @ItemPresentationModel(MealItemPresentationModel.class)
+    public List<Meal> getMeals()
     {
-        System.out.println(meal.GetContent());
-        return meal.GetContent();
+        return meals;
     }
 
-    public void updateData(int index, Meal meal)
+    public String getTimeString()
     {
-        this.meal = meal;
+        int weeksBetween = Weeks.weeksBetween(today.toLocalDate(), displayingDay.toLocalDate()).getWeeks();
+
+        if (weeksBetween > 0)
+        {
+            return weeksBetween + "주 후";
+        }
+        else if (weeksBetween == 0)
+        {
+            return "이번 주";
+        }
+        else
+        {
+            return -weeksBetween + "주 전";
+        }
+    }
+
+    public void previousWeek()
+    {
+        displayingDay = displayingDay.minusWeeks(1);
+        meals = mealModule.GetMealOfWeek(displayingDay);
+
+        presentationModelChangeSupport.firePropertyChange("meals");
+        presentationModelChangeSupport.firePropertyChange("timeString");
+    }
+
+    public void nextWeek()
+    {
+        displayingDay = displayingDay.plusWeeks(1);
+        meals = mealModule.GetMealOfWeek(displayingDay);
+
+        presentationModelChangeSupport.firePropertyChange("meals");
+        presentationModelChangeSupport.firePropertyChange("timeString");
     }
 }

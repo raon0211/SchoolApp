@@ -1,0 +1,66 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://robobinding.org/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e5e5e5"
+    android:orientation="vertical"
+    tools:context="in.suhj.banpo.Activities.MealActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/black_bg">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="이전"
+            android:textColor="#ccc"
+            android:layout_weight="0"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            bind:onClick="previousWeek"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            bind:text="{timeString}"
+            android:textColor="@color/black_tint"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="다음"
+            android:textColor="#ccc"
+            android:layout_gravity="right"
+            android:layout_weight="0"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            bind:onClick="nextWeek"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            bind:source="{meals}"
+            bind:itemLayout="@layout/template_meal_card"
+            android:divider="#00000000"
+            android:listSelector="@android:color/transparent"
+            android:paddingBottom="10dp"
+            android:clipToPadding="false">
+        </ListView>
+    </LinearLayout>
+</LinearLayout>

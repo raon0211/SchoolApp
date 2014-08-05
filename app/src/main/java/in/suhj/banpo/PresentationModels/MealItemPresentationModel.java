@@ -23,6 +23,11 @@ public class MealItemPresentationModel implements ItemPresentationModel<Meal>
         return meal.GetDinnerContent();
     }
 
+    public String getDateString()
+    {
+        return meal.GetDateString();
+    }
+
     public void updateData(int index, Meal meal)
     {
         this.meal = meal;
