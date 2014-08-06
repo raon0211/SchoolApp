@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import in.suhj.banpo.Abstract.IHttpClient;
+import in.suhj.banpo.Abstract.ITaskCompleted;
 import in.suhj.banpo.App;
 import in.suhj.banpo.Concrete.IonHttpClient;
 import in.suhj.banpo.Infrastructure.Data.RegexManager;
@@ -37,14 +38,12 @@ import in.suhj.banpo.Models.Meal;
 // TODO: 급식 List를 반환 후에도 계속해서 유지하도록 하기 (?)
 public class MealModule
 {
-    private ExecutorService executor;
     private IHttpClient client;
     private Context context;
     private Gson gson;
 
     public MealModule()
     {
-        this.executor = Executors.newFixedThreadPool(10);
         this.client = new IonHttpClient();
         this.context = App.getContext();
         this.gson = Converters.registerDateTime(new GsonBuilder()).create();

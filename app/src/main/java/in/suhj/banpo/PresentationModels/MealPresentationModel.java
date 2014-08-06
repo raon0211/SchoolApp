@@ -21,6 +21,7 @@ import in.suhj.banpo.Infrastructure.Modules.MealModule;
 
 public class MealPresentationModel extends AbstractPresentationModel
 {
+    private ITaskCompleted<Boolean> listener;
     private Context context;
     private MealModule mealModule;
     private DateTime today;
@@ -28,8 +29,9 @@ public class MealPresentationModel extends AbstractPresentationModel
 
     private List<Meal> meals;
 
-    public MealPresentationModel()
+    public MealPresentationModel(ITaskCompleted<Boolean> listener)
     {
+        this.listener = listener;
         this.context = App.getContext();
         this.mealModule = new MealModule();
         this.today = new DateTime();
@@ -73,6 +75,8 @@ public class MealPresentationModel extends AbstractPresentationModel
 
         presentationModelChangeSupport.firePropertyChange("meals");
         presentationModelChangeSupport.firePropertyChange("timeString");
+
+        notifyListener(true);
     }
 
     public void nextWeek()
@@ -82,5 +86,12 @@ public class MealPresentationModel extends AbstractPresentationModel
 
         presentationModelChangeSupport.firePropertyChange("meals");
         presentationModelChangeSupport.firePropertyChange("timeString");
+
+        notifyListener(true);
+    }
+
+    private void notifyListener(boolean success)
+    {
+        listener.OnTaskCompleted(success);
     }
 }

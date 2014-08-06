@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.robobinding.binder.Binders;
 
+import in.suhj.banpo.Abstract.ITaskCompleted;
 import in.suhj.banpo.PresentationModels.MealPresentationModel;
 import in.suhj.banpo.PresentationModels.SettingsPresentationModel;
 import in.suhj.banpo.R;
@@ -15,7 +17,7 @@ import in.suhj.banpo.R;
 /**
  * Created by SuhJin on 2014-08-02.
  */
-public class MealActivity extends ActionBarActivity
+public class MealActivity extends ActionBarActivity implements ITaskCompleted<Boolean>
 {
     private MealPresentationModel model;
 
@@ -23,7 +25,7 @@ public class MealActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        model = new MealPresentationModel();
+        model = new MealPresentationModel(this);
         Binders.bind(this, R.layout.activity_meal, model);
     }
 
@@ -44,5 +46,11 @@ public class MealActivity extends ActionBarActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void OnTaskCompleted(Boolean result)
+    {
+        ListView view = (ListView)findViewById(R.id.mealListView);
+        view.setSelectionAfterHeaderView();
     }
 }

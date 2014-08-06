@@ -55,6 +55,7 @@
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mealListView"
             bind:source="{meals}"
             bind:itemLayout="@layout/template_meal_card"
             android:divider="#00000000"
