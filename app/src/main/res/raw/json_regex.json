@@ -1,12 +1,22 @@
 {
-    "version": 20140802,
+    "version": 20140807,
     "meal": {
+        "url": "http://hes.sen.go.kr/sts_sci_md00_001.do",
         "yearMonth": "(?<=\"schYm\" id=\"schYm\"  value=\")(.*?)(?=\")",
         "container": "<td.*?><div>((.|\\n)*?)(</div>)?</td>",
         "date": "(\\d+)",
         "lunch": "(?<=\\[중식\\])((.|\n)*?)(?=(\\[|$))",
         "dinner": "(?<=\\[석식\\])((.|\n)+)",
         "trashInfo": "(^, |, $|[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬.]|\\(석\\)|\\(완\\))"
+    },
+    "schedule": {
+        "url": "http://banpo.hs.kr/custom/custom.do?dcpNo=30524",
+        "table": "<table style.*?>(.*?)</table>",
+        "wrapper": "<tr>(.*?)</tr>",
+        "container": "<td(.*?)</td>",
+        "date": "<span((?!italic)(?!12pt).)*?>(\\d+)</span>",
+        "content": "(<p((?!<strong>(&nbsp;)?(\\d|\\d/\\d{1,2})+</strong>)(.*?))</p>)",
+        "month": "(\\d{1,2})월"
     },
     "tools": {
         "br": "<br />"

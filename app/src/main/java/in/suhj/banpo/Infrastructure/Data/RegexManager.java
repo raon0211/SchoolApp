@@ -29,12 +29,22 @@ public class RegexManager
 
     private static int version;
 
+    private static String mealUrl;
     private static Pattern mealYearMonthPattern;
     private static Pattern mealContainerPattern;
     private static Pattern mealDatePattern;
     private static Pattern mealLunchPattern;
     private static Pattern mealDinnerPattern;
     private static Pattern mealTrashInfoPattern;
+
+    private static String scheduleUrl;
+    private static Pattern scheduleTable;
+    private static Pattern scheduleWrapper;
+    private static Pattern scheduleContainer;
+    private static Pattern scheduleDate;
+    private static Pattern scheduleContent;
+    private static Pattern scheduleMonth;
+
 
     private static Pattern toolsBrPattern;
 
@@ -59,12 +69,22 @@ public class RegexManager
                 version = regexJson.getInt("version");
 
                 JSONObject mealJson = regexJson.getJSONObject("meal");
+                mealUrl = mealJson.getString("url");
                 mealYearMonthPattern = Pattern.compile(mealJson.getString("yearMonth"));
                 mealContainerPattern = Pattern.compile(mealJson.getString("container"));
                 mealDatePattern = Pattern.compile(mealJson.getString("date"));
                 mealLunchPattern = Pattern.compile(mealJson.getString("lunch"));
                 mealDinnerPattern = Pattern.compile(mealJson.getString("dinner"));
                 mealTrashInfoPattern = Pattern.compile(mealJson.getString("trashInfo"));
+
+                JSONObject scheduleJson = regexJson.getJSONObject("schedule");
+                scheduleUrl = scheduleJson.getString("url");
+                scheduleTable = Pattern.compile(scheduleJson.getString("table"), Pattern.DOTALL);
+                scheduleWrapper = Pattern.compile(scheduleJson.getString("wrapper"), Pattern.DOTALL);
+                scheduleContainer = Pattern.compile(scheduleJson.getString("container"), Pattern.DOTALL);
+                scheduleDate = Pattern.compile(scheduleJson.getString("date"), Pattern.DOTALL);
+                scheduleContent = Pattern.compile(scheduleJson.getString("content"), Pattern.DOTALL);
+                scheduleMonth = Pattern.compile(scheduleJson.getString("month"));
 
                 JSONObject toolsJson = regexJson.getJSONObject("tools");
                 toolsBrPattern = Pattern.compile(toolsJson.getString("br"));
@@ -122,6 +142,11 @@ public class RegexManager
         Load();
     }
 
+    public static String getMealUrl()
+    {
+        return mealUrl;
+    }
+
     public static Pattern getMealYearMonthPattern()
     {
         return mealYearMonthPattern;
@@ -150,6 +175,41 @@ public class RegexManager
     public static Pattern getMealTrashInfoPattern()
     {
         return mealTrashInfoPattern;
+    }
+
+    public static String getScheduleUrl()
+    {
+        return scheduleUrl;
+    }
+
+    public static Pattern getScheduleTable()
+    {
+        return scheduleTable;
+    }
+
+    public static Pattern getScheduleWrapper()
+    {
+        return scheduleWrapper;
+    }
+
+    public static Pattern getScheduleContainer()
+    {
+        return scheduleContainer;
+    }
+
+    public static Pattern getScheduleDate()
+    {
+        return scheduleDate;
+    }
+
+    public static Pattern getScheduleContent()
+    {
+        return scheduleContent;
+    }
+
+    public static Pattern getScheduleMonth()
+    {
+        return scheduleMonth;
     }
 
     public static Pattern getToolsBrPattern()

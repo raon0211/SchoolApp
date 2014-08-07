@@ -10,9 +10,7 @@ import org.robobinding.presentationmodel.ItemPresentationModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.suhj.banpo.Abstract.ITaskCompleted;
 import in.suhj.banpo.Activities.MealActivity;
-import in.suhj.banpo.Activities.SettingsActivity;
 import in.suhj.banpo.App;
 import in.suhj.banpo.Models.Meal;
 import in.suhj.banpo.Infrastructure.Modules.MealModule;

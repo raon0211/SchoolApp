@@ -27,7 +27,7 @@ public class IonHttpClient implements IHttpClient
 
     public String get(String url) throws Exception
     {
-        Future<String> downloadTask = Ion.with(context).load(url).asString();
+        Future<String> downloadTask = Ion.with(context).load(url).setHeader("Accept-Encoding", "identity").asString();
 
         String result = "";
 
@@ -35,7 +35,7 @@ public class IonHttpClient implements IHttpClient
         {
             result = downloadTask.get();
         }
-        catch (Exception e) { throw new Exception(); }
+        catch (Exception e) { throw new Exception(e.getMessage()); }
 
         return result;
     }
