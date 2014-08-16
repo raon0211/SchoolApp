@@ -40,8 +40,21 @@ public class Schedule
         this.schedules = schedules;
     }
 
-    public String getDateString()
+    public int getDateId()
     {
-        return date.getYear() + "년 " + date.getMonthOfYear() + "월 " + date.getDayOfMonth() + "일 " + DateHelper.GetDayName(date.getDayOfWeek());
+        return DateHelper.GetDateId(date);
+    }
+
+
+    @Override
+    public String toString() {
+        String schedule = "스케줄 없음";
+
+        if (schedules.size() > 0)
+        {
+            schedule = schedules.get(0);
+        }
+
+        return getDateId() + ": " + schedule;
     }
 }

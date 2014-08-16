@@ -50,11 +50,27 @@ public class ScheduleModule
     public ArrayList<Schedule> GetScheduleOfWeek(DateTime date)
     {
         DateTime firstDayOfWeek = date.withDayOfWeek(DateTimeConstants.MONDAY);
-        DateTime lastDayOfWeek = date.withDayOfWeek(DateTimeConstants.FRIDAY);
+        DateTime lastDayOfWeek = date.withDayOfWeek(DateTimeConstants.SUNDAY);
 
-        List<Schedule> weekSchedule = from(GetScheduleOfYear(date))
+        ArrayList<Schedule> yearSchedule = GetScheduleOfYear(date);
+
+        List<Schedule> weekSchedule = from(yearSchedule)
                 .where("getDateId", greaterThan(DateHelper.GetDateId(firstDayOfWeek) - 1))
                 .and("getDateId", lessThan(DateHelper.GetDateId(lastDayOfWeek) + 1))
+                .all();
+
+        return new ArrayList<Schedule>(weekSchedule);
+    }
+
+    public ArrayList<Schedule> GetScheduleOfFollowingWeek(DateTime date)
+    {
+        DateTime nextWeekDate = date.plusWeeks(1);
+
+        ArrayList<Schedule> yearSchedule = GetScheduleOfYear(date);
+
+        List<Schedule> weekSchedule = from(yearSchedule)
+                .where("getDateId", greaterThan(DateHelper.GetDateId(date) - 1))
+                .and("getDateId", lessThan(DateHelper.GetDateId(nextWeekDate)))
                 .all();
 
         return new ArrayList<Schedule>(weekSchedule);
@@ -86,114 +102,7 @@ public class ScheduleModule
         // TODO: 예외 처리
         } catch (Exception e) { }
 
-        Matcher tableMatcher = RegexManager.getScheduleTable().matcher(rawData);
-
-        String tableData = "";
-        if (tableMatcher.find())
-        {
-            tableData = tableMatcher.group(1);
-        }
-
-        // 반포고등학교 학사일정 페이지 구조가 매우 특수함
-        // 날짜 tr - 일정 tr - 날짜 tr.. 이런 식으로 되어 있음
-        // 날짜 tr와 일정 tr로 분류가 필요
-        ArrayList<String> dateTrs = new ArrayList<>();
-        ArrayList<String> scheduleTrs = new ArrayList<>();
-
-        Matcher trMatcher = RegexManager.getScheduleWrapper().matcher(tableData);
-
-        while (trMatcher.find())
-        {
-            String trData = trMatcher.group(1);
-
-            Matcher dateMatcher = RegexManager.getScheduleDate().matcher(trData);
-            Matcher contentMatcher = RegexManager.getScheduleContent().matcher(trData);
-
-            if (dateMatcher.find())
-            {
-                dateTrs.add(trData);
-            }
-            else if (contentMatcher.find())
-            {
-                // Td가 5개인지 확인
-                Matcher containerMatcher = RegexManager.getScheduleContainer().matcher(trData);
-
-                int count = 0;
-                while (containerMatcher.find())
-                {
-                    count++;
-                }
-
-                if (count != 5) continue;
-
-                scheduleTrs.add(trData);
-            }
-        }
-
-        int index = 0;
-        int year = new DateTime().getYear();
-        int month = 3;
-
-        for (String dateData : dateTrs)
-        {
-            // TODO: 이렇게 해도 될지..
-            String scheduleData = scheduleTrs.get(index++);
-
-            Matcher monthMatcher = RegexManager.getScheduleMonth().matcher(dateData);
-            Matcher dateMatcher = RegexManager.getScheduleDate().matcher(dateData);
-            Matcher scheduleContainerMatcher = RegexManager.getScheduleContainer().matcher(scheduleData);
-
-            if (monthMatcher.find())
-            {
-                month = Integer.parseInt(monthMatcher.group(1));
-            }
-
-            // 일단 tr로 묶여 있는 일정을 td별로 끊어 주자
-            ArrayList<String> daySchedules = new ArrayList<>();
-
-            while (scheduleContainerMatcher.find())
-            {
-                daySchedules.add(scheduleContainerMatcher.group(0));
-            }
-
-            int dayIndex = 0;
-
-            while (dateMatcher.find())
-            {
-                // 일정 날짜
-                int day = Integer.parseInt(dateMatcher.group(2));
-
-                // 각 스케줄이 저장되는 곳
-                ArrayList<String> parsedSchedules = new ArrayList<>();
-
-                String dayScheduleData = daySchedules.get(dayIndex++);
-
-                Matcher contentMatcher = RegexManager.getScheduleContent().matcher(dayScheduleData);
-
-                while (contentMatcher.find())
-                {
-                    String rawSchedule = contentMatcher.group(0);
-                    String trimmedSchedule = android.text.Html.fromHtml(rawSchedule).toString().replaceAll("[\r\n\\s]", "");
-
-                    if (!StringUtils.isBlank(trimmedSchedule))
-                    {
-                        parsedSchedules.add(trimmedSchedule);
-                    }
-                }
-
-                if (parsedSchedules.size() == 0) continue;
-
-                DateTime date = new DateTime(year, month, day, 0, 0, 0);
-
-                // 25~30일의 경우 학교 홈페이지 정보상 월이 +1이 되는 경우가 있다
-                if (day > 25 && day > schedules.get(schedules.size() - 1).getDate().getDayOfMonth())
-                {
-                    date.minusMonths(1);
-                }
-
-                schedules.add(new Schedule(date, parsedSchedules));
-            }
-        }
+        schedules = gson.fromJson(rawData, new TypeToken<ArrayList<Schedule>>(){}.getType());
 
         saveSchedules(schedules, time);
 
@@ -216,7 +125,7 @@ public class ScheduleModule
 
         if (scheduleDbExistsFor(date))
         {
-            String scheduleJsonName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+            String scheduleJsonName = date.getYear() + ".json";
 
             try
             {

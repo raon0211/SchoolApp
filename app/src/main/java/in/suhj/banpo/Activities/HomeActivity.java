@@ -40,6 +40,16 @@ public class HomeActivity extends ActionBarActivity
                 startActivity(new Intent(getApplicationContext(), MealActivity.class));
             }
         });
+
+        View scheduleMoreBtn = (View)findViewById(R.id.btn_main_navigate_schedule);
+        scheduleMoreBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+            }
+        });
     }
 
     @Override

@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="RaonBlue" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/RaonBlue.ActionBar</item>
+        <item name="android:textColor">#444</item>
     </style>
 
     <style name="RaonBlue.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">

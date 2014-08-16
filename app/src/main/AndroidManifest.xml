@@ -26,6 +26,12 @@
         </activity>
 
         <activity
+            android:name=".Activities.ScheduleActivity"
+            android:label="@string/schedule"
+            android:logo="@drawable/ic_action_calendar">
+        </activity>
+
+        <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/settings"
             android:logo="@drawable/ic_action_settings">

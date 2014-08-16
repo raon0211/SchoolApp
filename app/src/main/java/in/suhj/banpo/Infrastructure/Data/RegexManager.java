@@ -38,13 +38,6 @@ public class RegexManager
     private static Pattern mealTrashInfoPattern;
 
     private static String scheduleUrl;
-    private static Pattern scheduleTable;
-    private static Pattern scheduleWrapper;
-    private static Pattern scheduleContainer;
-    private static Pattern scheduleDate;
-    private static Pattern scheduleContent;
-    private static Pattern scheduleMonth;
-
 
     private static Pattern toolsBrPattern;
 
@@ -79,12 +72,6 @@ public class RegexManager
 
                 JSONObject scheduleJson = regexJson.getJSONObject("schedule");
                 scheduleUrl = scheduleJson.getString("url");
-                scheduleTable = Pattern.compile(scheduleJson.getString("table"), Pattern.DOTALL);
-                scheduleWrapper = Pattern.compile(scheduleJson.getString("wrapper"), Pattern.DOTALL);
-                scheduleContainer = Pattern.compile(scheduleJson.getString("container"), Pattern.DOTALL);
-                scheduleDate = Pattern.compile(scheduleJson.getString("date"), Pattern.DOTALL);
-                scheduleContent = Pattern.compile(scheduleJson.getString("content"), Pattern.DOTALL);
-                scheduleMonth = Pattern.compile(scheduleJson.getString("month"));
 
                 JSONObject toolsJson = regexJson.getJSONObject("tools");
                 toolsBrPattern = Pattern.compile(toolsJson.getString("br"));
@@ -180,36 +167,6 @@ public class RegexManager
     public static String getScheduleUrl()
     {
         return scheduleUrl;
-    }
-
-    public static Pattern getScheduleTable()
-    {
-        return scheduleTable;
-    }
-
-    public static Pattern getScheduleWrapper()
-    {
-        return scheduleWrapper;
-    }
-
-    public static Pattern getScheduleContainer()
-    {
-        return scheduleContainer;
-    }
-
-    public static Pattern getScheduleDate()
-    {
-        return scheduleDate;
-    }
-
-    public static Pattern getScheduleContent()
-    {
-        return scheduleContent;
-    }
-
-    public static Pattern getScheduleMonth()
-    {
-        return scheduleMonth;
     }
 
     public static Pattern getToolsBrPattern()
