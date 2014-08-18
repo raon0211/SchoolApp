@@ -7,7 +7,12 @@ html, body {
     font-size: 14px;
 }
 
+a, a:visited {
+   color: #0d64ad; 
+}
+
 header {
+    margin-bottom: 1.5em;
     padding: 12px 0;
     background-color: #0d64ad;
     color: #fff;
