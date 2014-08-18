@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import in.suhj.banpo.Abstract.IHttpClient;
@@ -38,6 +39,10 @@ public class RegexManager
     private static Pattern mealTrashInfoPattern;
 
     private static String scheduleUrl;
+
+    private static String noticeUrl;
+
+    private static String informationUrl;
 
     private static Pattern toolsBrPattern;
 
@@ -73,22 +78,31 @@ public class RegexManager
                 JSONObject scheduleJson = regexJson.getJSONObject("schedule");
                 scheduleUrl = scheduleJson.getString("url");
 
+                JSONObject noticeJson = regexJson.getJSONObject("notice");
+                noticeUrl = noticeJson.getString("url");
+
+                JSONObject informationJson = regexJson.getJSONObject("information");
+                informationUrl = informationJson.getString("url");
+
                 JSONObject toolsJson = regexJson.getJSONObject("tools");
                 toolsBrPattern = Pattern.compile(toolsJson.getString("br"));
             } catch (Exception e) { }
         }
     }
 
-    private static void Update(final IRunnable<String> callback)
+    public static void Update(final IRunnable<String> callback)
     {
         String response = "";
 
         try
         {
-             response = client.get("http://raon0211.github.io/Banpo/data/regex.json");
+             response = client.get("http://raon0211.github.io/Banpo/data/regex.json?rand=" + new Random().nextInt(1000));
         }
-        // TODO: 예외 처리
-        catch (Exception e) { }
+        catch (Exception e)
+        {
+            callback.run("인터넷에 연결이 되어 있지 않거나 연결 상태가 좋지 않은 것 같습니다. 잠시 후 다시 시도해 주세요.");
+            return;
+        }
 
         String message = "패턴 업데이트에 실패했습니다. 잠시 후 다시 시도해 주세요. 오류 코드: 없음";
 
@@ -167,6 +181,16 @@ public class RegexManager
     public static String getScheduleUrl()
     {
         return scheduleUrl;
+    }
+
+    public static String getNoticeUrl()
+    {
+        return noticeUrl;
+    }
+
+    public static String getInformationUrl()
+    {
+        return informationUrl;
     }
 
     public static Pattern getToolsBrPattern()

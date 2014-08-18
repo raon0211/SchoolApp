@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">반포고등학교</string>
+    <string name="current_version">1.0</string>
+
     <string name="settings">설정</string>
 
     <string name="home">홈</string>
@@ -14,6 +15,22 @@
 
     <string name="schedule">학사일정</string>
 
+    <string name="information">정보</string>
+
+    <string name="troubleshoot">오류 해결</string>
+
+    <string name="cache_delete">저장된 데이터 삭제</string>
+    <string name="cache_delete_desc">급식 및 학사일정 정보를 새로 내려받습니다</string>
+
     <string name="pattern_update">패턴 업데이트</string>
     <string name="pattern_update_desc">앱이 오작동할 때 사용해 주세요</string>
+
+    <string name="app_info_inquiry">앱 정보 및 문의 방법</string>
+    <string name="current_version_string">현재 버전</string>
+    <string name="design_development">디자인 및 개발</string>
+    <string name="developer">박서진</string>
+    <string name="developer_class">(2-7)</string>
+    <string name="inquiry">앱 관련 문의</string>
+    <string name="email">banpo@suhj.in</string>
+    <string name="open_source">이 앱의 소스는 http://github.com/raon0211/Banpo에 공개되어 있습니다.</string>
 </resources>

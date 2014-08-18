@@ -4,4 +4,11 @@
 
     <color name="black_bg">#3c3c3c</color>
     <color name="black_tint">#ffffff</color>
+
+    <color name="gray">#888</color>
+
+    <color name="yellow">#faed3e</color>
+    <color name="orange">#fab73e</color>
+    <color name="green">#a9fa3e</color>
+    <color name="skyblue">#00d7f5</color>
 </resources>

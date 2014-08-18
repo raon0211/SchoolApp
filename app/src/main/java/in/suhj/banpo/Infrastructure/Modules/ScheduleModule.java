@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -112,7 +113,7 @@ public class ScheduleModule
     private boolean scheduleDbExistsFor(DateTime date)
     {
         // json 파일 존재 여부 확인
-        String scheduleJsonName = date.getYear() + ".json";
+        String scheduleJsonName = getScheduleDbFilename(date);
 
         File file = context.getFileStreamPath(scheduleJsonName);
 
@@ -125,7 +126,7 @@ public class ScheduleModule
 
         if (scheduleDbExistsFor(date))
         {
-            String scheduleJsonName = date.getYear() + ".json";
+            String scheduleJsonName = getScheduleDbFilename(date);
 
             try
             {
@@ -144,7 +145,7 @@ public class ScheduleModule
     {
         String serializedSchedules = gson.toJson(schedules);
 
-        String fileName = date.getYear() + ".json";
+        String fileName = getScheduleDbFilename(date);
 
         try
         {
@@ -153,5 +154,23 @@ public class ScheduleModule
             stream.close();
         }
         catch (Exception e) { }
+    }
+
+    private String getScheduleDbFilename(DateTime date)
+    {
+        return "schedule-" + date.getYear() + ".json";
+    }
+
+    public void removeScheduleData()
+    {
+        List<String> fileList = Arrays.asList(context.fileList());
+
+        for (String file : fileList)
+        {
+            if (file.startsWith("schedule"))
+            {
+                context.deleteFile(file);
+            }
+        }
     }
 }

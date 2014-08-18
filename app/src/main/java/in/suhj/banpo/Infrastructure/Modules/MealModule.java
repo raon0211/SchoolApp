@@ -16,6 +16,7 @@ import org.joda.time.DateTimeConstants;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -195,7 +196,7 @@ public class MealModule
     private boolean mealDbExistsFor(DateTime date)
     {
         // json 파일 존재 여부 확인
-        String mealJsonName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+        String mealJsonName = getMealDbFilename(date);
 
         File file = context.getFileStreamPath(mealJsonName);
 
@@ -208,7 +209,7 @@ public class MealModule
 
         if (mealDbExistsFor(date))
         {
-            String mealJsonName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+            String mealJsonName = getMealDbFilename(date);
 
             try
             {
@@ -227,7 +228,7 @@ public class MealModule
     {
         String serializedMeals = gson.toJson(meals);
 
-        String fileName = date.getYear() + "-" + date.getMonthOfYear() + ".json";
+        String fileName = getMealDbFilename(date);
 
         try
         {
@@ -236,5 +237,23 @@ public class MealModule
             stream.close();
         }
         catch (Exception e) { }
+    }
+
+    private String getMealDbFilename(DateTime date)
+    {
+        return "meal-" + date.getYear() + "-" + date.getMonthOfYear() + ".json";
+    }
+
+    public void removeMealData()
+    {
+        List<String> fileList = Arrays.asList(context.fileList());
+
+        for (String file : fileList)
+        {
+            if (file.startsWith("meal"))
+            {
+                context.deleteFile(file);
+            }
+        }
     }
 }

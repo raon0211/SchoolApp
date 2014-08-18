@@ -1,17 +1,22 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="RaonBlue" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="RaonBlue" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/RaonBlue.ActionBar</item>
-        <item name="android:textColor">#444</item>
+        <item name="actionBarStyle">@style/RaonBlue.ActionBar</item>
     </style>
 
-    <style name="RaonBlue.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="RaonBlue.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/emphasis</item>
+        <item name="background">@color/emphasis</item>
         <item name="android:titleTextStyle">@style/RaonBlue.ActionBar.TitleTextStyle</item>
     </style>
 
     <style name="RaonBlue.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="selectableItem">
+        <item name="android:background">@android:drawable/list_selector_background</item>
     </style>
 </resources>

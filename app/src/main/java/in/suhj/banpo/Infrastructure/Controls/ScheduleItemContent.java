@@ -36,9 +36,16 @@ public class ScheduleItemContent extends LinearLayout
         textView.setText(schedule);
     }
 
-    public void setBackground(Drawable resource)
+    public void removeBackground()
     {
         LinearLayout layout = (LinearLayout)findViewById(R.id.schedule_day_item_layout);
-        layout.setBackgroundDrawable(resource);
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            layout.setBackgroundResource(0);
+        } else {
+            layout.setBackground(null);
+        }
     }
 }

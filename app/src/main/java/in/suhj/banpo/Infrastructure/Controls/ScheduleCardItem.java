@@ -24,11 +24,7 @@ public class ScheduleCardItem extends LinearLayout
     }
 
     public ScheduleCardItem(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public ScheduleCardItem(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        super(context, attrs);
 
         this.context = context;
 
@@ -53,7 +49,7 @@ public class ScheduleCardItem extends LinearLayout
             listLayout.addView(content);
         }
 
-        View lastContent = listLayout.getChildAt(listLayout.getChildCount() - 1);
-        lastContent.setBackground(null);
+        ScheduleItemContent lastContent = (ScheduleItemContent)listLayout.getChildAt(listLayout.getChildCount() - 1);
+        lastContent.removeBackground();
     }
 }

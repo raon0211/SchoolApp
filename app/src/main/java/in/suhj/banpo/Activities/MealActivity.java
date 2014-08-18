@@ -25,6 +25,8 @@ public class MealActivity extends ActionBarActivity implements ITaskCompleted<Bo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setIcon(R.drawable.ic_action_meal);
+
         model = new MealPresentationModel(this);
         Binders.bind(this, R.layout.activity_meal, model);
     }

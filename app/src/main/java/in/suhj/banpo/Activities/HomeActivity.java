@@ -6,14 +6,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 
 import org.robobinding.binder.Binders;
 
+import in.suhj.banpo.Abstract.ITaskCompleted;
 import in.suhj.banpo.PresentationModels.HomePresentationModel;
 import in.suhj.banpo.R;
 
 
-public class HomeActivity extends ActionBarActivity
+public class HomeActivity extends ActionBarActivity implements ITaskCompleted<Boolean>
 {
     private HomePresentationModel model;
 
@@ -22,8 +24,9 @@ public class HomeActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         this.setTitle(getResources().getString(R.string.home));
+        getSupportActionBar().setIcon(R.drawable.ic_action_home);
 
-        model = new HomePresentationModel();
+        model = new HomePresentationModel(this);
         Binders.bind(this, R.layout.activity_main, model);
 
         bindEvents();
@@ -69,5 +72,11 @@ public class HomeActivity extends ActionBarActivity
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void OnTaskCompleted(Boolean result)
+    {
+        ScrollView view = (ScrollView)findViewById(R.id.home_scroll_view);
+        view.pageScroll(View.FOCUS_UP);
     }
 }

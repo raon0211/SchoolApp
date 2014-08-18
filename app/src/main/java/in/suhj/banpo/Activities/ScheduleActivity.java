@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -52,6 +53,8 @@ public class ScheduleActivity extends ActionBarActivity implements ITaskComplete
         this.schedules = new ArrayList<>();
         this.today = new DateTime();
         this.displayingDay = new DateTime();
+
+        getSupportActionBar().setIcon(R.drawable.ic_action_calendar);
 
         setContentView(R.layout.activity_schedule);
         bindEvents();
@@ -172,8 +175,8 @@ public class ScheduleActivity extends ActionBarActivity implements ITaskComplete
 
     public void OnTaskCompleted(Boolean result)
     {
-        ListView view = (ListView)findViewById(R.id.scheduleListView);
-        view.setSelectionAfterHeaderView();
+        ScrollView view = (ScrollView)findViewById(R.id.schedule_scroll_view);
+        view.pageScroll(View.FOCUS_UP);
     }
 
     class ScheduleHandler extends Handler
