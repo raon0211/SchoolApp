@@ -1,5 +1,5 @@
 {
-    "version": 20140817,
+    "version": 20140818,
     "meal": {
         "url": "http://hes.sen.go.kr/sts_sci_md00_001.do",
         "yearMonth": "(?<=\"schYm\" id=\"schYm\"  value=\")(.*?)(?=\")",
@@ -14,6 +14,9 @@
     },
     "notice": {
         "url": "http://raon0211.github.io/Banpo/notice.json"
+    },
+    "information": {
+        "url": "http://banpo.suhj.in/"
     },
     "tools": {
         "br": "<br />"
