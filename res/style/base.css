@@ -68,6 +68,10 @@ p {
     border-bottom: 1px solid #ddd;
 }
 
+#content section:last-child {
+    border: none;
+}
+
 h1 {
     font-weight: 400;
     font-size: 1.4em;
@@ -86,15 +90,18 @@ h1 {
 }
 
 .download-btn {
-    padding: .3em .5em;
+    padding: .4em .6em;
     margin: .3em;
-    background: #0d64ad;
-    color: white;
+    background: #eee;
+    color: #000;
+    cursor: pointer;
+    font-size: 1.1em;
 }
 
 .download-btn::before {
     font-family: FontAwesome;
     content: "\f0c6";
+    margin-right: .3em;
 }
 
 footer {
