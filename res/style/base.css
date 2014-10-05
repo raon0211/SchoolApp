@@ -4,7 +4,8 @@
 html, body {
     font-family: sans-serif;
     line-height: 160%;
-    font-size: 14px;
+    font-size: 16px;
+    text-align: center;
 }
 
 a, a:visited {
@@ -12,19 +13,22 @@ a, a:visited {
 }
 
 header {
-    margin-bottom: 1.5em;
     padding: 12px 0;
     background-color: #0d64ad;
     color: #fff;
     font-weight: 700;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.0em;
     position: relative;
 }
 
 header a {
     text-decoration: none;
     color: #fff !important;
+}
+
+p {
+    margin: .5em 0;
 }
 
 .nav-btn {
@@ -59,21 +63,38 @@ header a {
     margin: 0 auto;
 }
 
+#content section {
+    padding: 2em 0;
+    border-bottom: 1px solid #ddd;
+}
+
 h1 {
     font-weight: 400;
     font-size: 1.4em;
     color: #0d64ad;
-    margin: 1em 0 .5em 0;
+    margin: 0 0 .5em 0;
+    text-align: center;
 }
 
 .bulleted-list {
     list-style: disc;
-    margin-left: ;
     margin: 1em 0 1em 20px;
 }
 
 .bulleted-list li {
     margin: .5em;
+}
+
+.download-btn {
+    padding: .3em .5em;
+    margin: .3em;
+    background: #0d64ad;
+    color: white;
+}
+
+.download-btn::before {
+    font-family: FontAwesome;
+    content: "\f0c6";
 }
 
 footer {
